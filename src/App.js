@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import MovieList from './components/MovieList';
+
 const apiKey = '80deeacb';
 const apiUrl = 'https://www.omdbapi.com';
 
@@ -31,9 +33,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>MY FAVOURITE MOVIES</h1>
-        <ul>
-          {movies.map( movie => <li key={movie.imdbID}>{movie.Title}</li>)}
-        </ul>
+        <MovieList movies={movies}/>
       </header>
     </div>
   );
