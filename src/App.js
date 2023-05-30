@@ -2,18 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import MovieList from './components/Movie/MovieList';
 import Header from './components/NavBar/Header';
-
-const apiKey = '80deeacb';
-const apiUrl = 'https://www.omdbapi.com';
-
-const fetchMovies = async (search = '') => {
-  if(search.length < 3 ) return;
-  const response = await fetch(apiUrl + '?apikey=' + apiKey + '&s=' + search)
-  .then(res => res.json());
-  const {Error ,Search: movies} = response;
-  console.log(response);
-  return {movies, Error: Error ?? ''};
-}
+import fetchMovies from './utils';
 
 function App() {
   const [movies, setMovies] = useState([]);
