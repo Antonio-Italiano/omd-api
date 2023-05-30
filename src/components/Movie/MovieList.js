@@ -3,10 +3,10 @@ import MovieItem from "./MovieItem";
 const MovieList = ({movies}) => {
   
     return (
-        <div className="row">
+        <div className="row justify-content-center">
             
           {
-            movies.map(movie => <MovieItem movie={movie}/> )
+            movies.map(movie => <MovieItem key={movie.imdbID} movie={movie}/> )
           }
         </div>
     );

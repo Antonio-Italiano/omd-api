@@ -1,29 +1,37 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import MovieList from './components/MovieList';
+import MovieList from './components/Movie/MovieList';
+import Header from './components/NavBar/Header';
 
 const apiKey = '80deeacb';
 const apiUrl = 'https://www.omdbapi.com';
 
-const fetchMovies = async (search = 'The godfather') => {
+const fetchMovies = async (search = '') => {
+  if(search.length < 3 ) return;
   const response = await fetch(apiUrl + '?apikey=' + apiKey + '&s=' + search)
   .then(res => res.json());
-  const {Search: movies, totalResults: totalCount} = response;
+  const {Error ,Search: movies} = response;
   console.log(response);
-  return {movies, totalCount}
+  return {movies, Error: Error ?? ''};
 }
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [totalCount, setTotalCount] = useState(0)
-  
-  useEffect(() => {
-    const callApy = async () => {
-      const data = await fetchMovies();
+  const [error, setError] = useState('');
+
+  const callApi = async (search = '') => {
+    const data = await fetchMovies(search);
+    setError(data.Error);
+    if(!data.Error.length ){
       setMovies(data.movies);
-      setTotalCount(data.totalCount);
+    } else {
+      setMovies([]);
     }
-    callApy();
+  }
+
+  useEffect(() => {
+    
+    callApi('india');
   
     return () => {
     }
@@ -31,10 +39,12 @@ function App() {
   
   return (
     <div className="App">
-      <header className="App-header">
+        <Header onSearchChange = {callApi}/>
         <h1>MY FAVOURITE MOVIES</h1>
-        <MovieList movies={movies}/>
-      </header>
+        {
+          !error ? <MovieList movies={movies}/> : <h2>{error}</h2>
+        }
+        
     </div>
   );
 }
